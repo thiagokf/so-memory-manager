@@ -29,7 +29,7 @@ sudo apt install build-essential
 
 ```
 include/
-  config.h             -> parametros configuraveis (tamanho da memoria, pagina, max processo)
+  config.h             -> parametros padrões
   memoria_fisica.h     -> interface do modulo de memoria fisica
   processo.h           -> interface do modulo de processos
 src/
@@ -71,7 +71,7 @@ make clean && make
 ./simulador
 ```
 
-Ao iniciar, o programa exibe a configuracao atual e apresenta o menu:
+Ao iniciar, o programa exibe as opções para configuração da memória fisica, tamanho de quadro e tamanho maximo do processo. Após isso, apresenta o menu:
 
 ```
 === Simulador de Gerenciamento de Memoria com Paginacao ===
@@ -150,23 +150,16 @@ Numero de paginas  : 3
 
 **Como interpretar:** cada linha da tabela mostra o mapeamento de uma pagina logica para um quadro fisico. Por exemplo, `Pagina 0 -> Quadro 0` significa que a primeira pagina do processo esta armazenada no quadro 0 da memoria fisica. Os quadros nao precisam ser contiguos — essa e a essencia da paginacao.
 
+### 4 - Matar um processo
+Solicita o ID do processo a ser excluido.
+Se o ID existir, exclui o processo alocado da memória.
+
+Mensagens de erro possiveis:
+- `"Processo %d não encontrado."` — ID oferecido pelo usuário não encontrado na memória
+
 ### 0 - Sair
 
 Encerra o simulador, liberando toda a memoria alocada.
-
----
-
-## Configuracao
-
-Os parametros do simulador ficam em `config.h`. Todos devem ser **potencias de 2**:
-
-```c
-#define TAM_MEMORIA_FISICA 128   /* tamanho total da memoria fisica em bytes */
-#define TAM_PAGINA           8   /* tamanho de uma pagina/quadro em bytes    */
-#define TAM_MAX_PROCESSO    64   /* tamanho maximo de um processo em bytes   */
-```
-
-Para alterar, edite os valores em `config.h` e recompile com `make clean && make`. O arquivo possui verificacoes em tempo de compilacao que impedem valores invalidos (nao potencia de 2, memoria nao multipla da pagina, etc.).
 
 ---
 
@@ -226,6 +219,16 @@ Numero de paginas  : 3
        1  ->       1
        2  ->       2
 ===========================================
+
+--- Menu ---
+1 - Visualizar memória
+2 - Criar processo
+3 - Visualizar tabela de páginas
+4 - Matar um processo
+0 - Sair
+Opção: 4
+Digite o ID do processo a ser encerrado: 2
+Processo 2 removido da memória.
 
 --- Menu ---
 Opcao: 0
